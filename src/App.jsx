@@ -15,13 +15,27 @@ function App() {
 
   const visibleContacts = contacts.slice(0, index);
 
+  switch (orderBy) {
+    case 'name':
+      visibleContacts.sort(function (a, b) {
+        var textA = a.name.toUpperCase();
+        var textB = b.name.toUpperCase();
+        return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+      });
+      break;
+
+    case 'popularity':
+      visibleContacts.sort((a, b) => b.popularity - a.popularity);
+      break;
+  }
+
   return (
     <div className="App">
       <h1> React IronContacts</h1>
       <h2> Contacts remaining:  {contacts.length - index}</h2>
       <button disabled={index == contacts.length} onClick={handleNewContact}>Add New Contact</button>
-      <button>By Name</button>
-      <button>Popularity</button>
+      <button disabled={orderBy == 'name'} onClick={() => setOrderBy('name')}>By Name</button>
+      <button disabled={orderBy == 'popularity'} onClick={() => setOrderBy('popularity')}>Popularity</button>
 
       <table>
         <thead>
